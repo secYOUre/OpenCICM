@@ -1,0 +1,186 @@
+module CICM {
+  typedef unsigned long UInt32;
+  typedef string CharString;
+  typedef sequence<octet> Buffer;
+
+  typedef CICM::UInt32 LocalPort;
+  typedef CICM::UInt32 RemotePort;
+
+  const CICM::LocalPort FILL_INTERFACE_PORT = 0xFFFFFFEE;
+  const CICM::LocalPort IMPLICIT_LOCAL_PORT = 0xFFFFFFBB;
+  const CICM::RemotePort IMPLICIT_REMOTE_PORT = 0xFFFFFF99;
+
+  typedef CICM::UInt32 Classification;
+  const CICM::Classification C_LEVEL_CONFIDENTIAL = 0x00006029;
+  const CICM::Classification C_LEVEL_SECRET = 0x0000602A;
+  const CICM::Classification C_LEVEL_TOP_SECRET = 0x0000602C;
+  const CICM::Classification C_LEVEL_UNCLASSIFIED = 0x0000602F;
+
+  typedef CICM::UInt32 Status;
+  const CICM::Status S_OK = 0x00000000;
+  const CICM::Status S_GENERAL_ERROR = 0x00000003;
+  const CICM::Status S_NON_FUNCTIONAL = 0x00000005;
+  const CICM::Status S_OPERATION_FAILED = 0x00000006;
+  const CICM::Status S_POLICY_VIOLATION = 0x00000009;
+  const CICM::Status S_MODULE_RESOURCES = 0x0000000A;
+  const CICM::Status S_HOST_RESOURCES = 0x0000000C;
+  const CICM::Status S_INVALID_STATE = 0x0000000F;
+  const CICM::Status S_ALARM_STATE = 0x00000011;
+  const CICM::Status S_MODULE_NOT_AVAILABLE = 0x00000012;
+  const CICM::Status S_TIMEOUT = 0x00000014;
+  const CICM::Status S_NOT_AUTHENTICATED = 0x00000017;
+  const CICM::Status S_NOT_AUTHORIZED = 0x00000018;
+  const CICM::Status S_MODULE_DOES_NOT_EXIST = 0x0000001B;
+  const CICM::Status S_MODULE_IN_USE = 0x0000001D;
+  const CICM::Status S_NOT_AVAILABLE = 0x0000001E;
+  const CICM::Status S_INVALID_VECTOR = 0x00000021;
+  const CICM::Status S_INVALID_DATA_BUFFER = 0x00000022;
+  const CICM::Status S_KEY_USED_INVALID = 0x00000024;
+  const CICM::Status S_KEY_USED_EXPIRED = 0x00000027;
+  const CICM::Status S_KEY_USED_CLASSIFICATION = 0x00000028;
+  const CICM::Status S_KEY_USED_WRAPPED = 0x0000002B;
+  const CICM::Status S_KEY_USED_CONTEXT = 0x0000002D;
+  const CICM::Status S_KEY_USED_COMPONENT_NOT_AVAIL = 0x0000002E;
+  const CICM::Status S_KEY_INVALID = 0x00000030;
+  const CICM::Status S_KEY_EXPIRED = 0x00000033;
+  const CICM::Status S_KEY_INCOMPATIBLE = 0x00000035;
+  const CICM::Status S_KEY_CLASSIFICATION = 0x00000036;
+  const CICM::Status S_KEY_WRAPPED = 0x00000039;
+  const CICM::Status S_KEY_NOT_WRAPPED = 0x0000003A;
+  const CICM::Status S_KEY_NOT_WRAPPABLE = 0x0000003C;
+  const CICM::Status S_KEY_NOT_EXPORTABLE = 0x0000003F;
+  const CICM::Status S_KEY_WRAPPED_EXISTS = 0x00000041;
+  const CICM::Status S_KEY_UNWRAPPED_EXISTS = 0x00000042;
+  const CICM::Status S_KEY_UPDATE_MAX = 0x00000044;
+  const CICM::Status S_KEY_INVALID_ID = 0x00000047;
+  const CICM::Status S_KEY_PHYSICAL_LOC = 0x00000048;
+  const CICM::Status S_KEY_ILLEGAL_CONVERSION = 0x0000004B;
+  const CICM::Status S_KEY_MALFORMED = 0x0000004D;
+  const CICM::Status S_KEY_METADATA_MALFORMED = 0x0000004E;
+  const CICM::Status S_KEY_NO_NEXT = 0x00000050;
+  const CICM::Status S_KEY_WRONG_TYPE = 0x00000053;
+  const CICM::Status S_KEY_FILL_DEVICE_NOT_CONNECTED = 0x00000055;
+  const CICM::Status S_KEY_FILL_NOT_INITIATED = 0x00000056;
+  const CICM::Status S_KEY_TRUST_ANCHOR = 0x00000059;
+  const CICM::Status S_LOCAL_PORT_INVALID = 0x0000005A;
+  const CICM::Status S_LOCAL_PORT_INCOMPATIBLE = 0x0000005C;
+  const CICM::Status S_LOCAL_PORT_IN_USE = 0x0000005F;
+  const CICM::Status S_REMOTE_PORT_INVALID = 0x00000060;
+  const CICM::Status S_REMOTE_PORT_IN_USE = 0x00000063;
+  const CICM::Status S_ALGO_INVALID = 0x00000065;
+  const CICM::Status S_ALGO_INCOMPATIBLE = 0x00000066;
+  const CICM::Status S_TOKEN_NOT_PRESENT = 0x00000069;
+  const CICM::Status S_TOKEN_ADMIN_NOT_PRESENT = 0x0000006A;
+  const CICM::Status S_TOKEN_ACCESS = 0x0000006C;
+  const CICM::Status S_TOKEN_RESOURCES = 0x0000006F;
+  const CICM::Status S_TOKEN_ASSOC_EXISTS = 0x00000071;
+  const CICM::Status S_TOKEN_ASSOC_AT_MODULE = 0x00000072;
+  const CICM::Status S_TOKEN_ASSOC_AT_TOKEN = 0x00000074;
+  const CICM::Status S_TOKEN_ASSOC_NOT_EXIST = 0x00000077;
+  const CICM::Status S_TOKEN_ASSOC_GENERAL = 0x00000078;
+  const CICM::Status S_TOKEN_DISASSOC_GENERAL = 0x0000007B;
+  const CICM::Status S_TOKEN_REC_NOT_FOUND = 0x0000007D;
+  const CICM::Status S_TOKEN_TIMEOUT = 0x0000007E;
+  const CICM::Status S_TOKEN_LAST_ASSOCIATED = 0x00000081;
+  const CICM::Status S_PACKAGE_NOT_ACTIVATABLE = 0x00000082;
+  const CICM::Status S_PACKAGE_ACTIVATED = 0x00000084;
+  const CICM::Status S_PACKAGE_NOT_ACTIVE = 0x00000087;
+  const CICM::Status S_PACKAGE_INVALID = 0x00000088;
+  const CICM::Status S_PACKAGE_TYPE_INVALID = 0x0000008B;
+  const CICM::Status S_PACKAGE_KEY_NOT_AVAILABLE = 0x0000008D;
+  const CICM::Status S_PACKAGE_KEY_NOT_SPECIFIED = 0x0000008E;
+  const CICM::Status S_LOG_ENTRY_INVALID = 0x00000090;
+  const CICM::Status S_EVENT_REGISTERED = 0x00000093;
+  const CICM::Status S_EVENT_NOT_REGISTERED = 0x00000095;
+  const CICM::Status S_EVENT_NOT_SUPPORTED = 0x00000096;
+  const CICM::Status S_TRUSTED_DISPLAY = 0x00000099;
+  const CICM::Status S_NEGOTIATION_ABORTED = 0x0000009A;
+  const CICM::Status S_NEGOTIATION_FAILURE = 0x0000009C;
+  const CICM::Status S_NEGOTIATION_IN_PROGRESS = 0x0000009F;
+  const CICM::Status S_NEGOTIATION_NOT_IN_PROGRESS = 0x000000A0;
+  const CICM::Status S_NEGOTIATION_TIMEOUT = 0x000000A3;
+  const CICM::Status S_CERT_LOCAL_INVALID = 0x000000A5;
+  const CICM::Status S_CERT_LOCAL_EXPIRED = 0x000000A6;
+  const CICM::Status S_CERT_REMOTE_INVALID = 0x000000A9;
+  const CICM::Status S_CERT_REMOTE_EXPIRED = 0x000000AA;
+  const CICM::Status S_CERT_REMOTE_PATH = 0x000000AC;
+  const CICM::Status S_PROTO_INVALID = 0x000000AF;
+  const CICM::Status S_PROTO_INCOMPATIBLE = 0x000000B1;
+  const CICM::Status S_PROTO_UNDETERMINED = 0x000000B2;
+  const CICM::Status S_CHANNEL_ERROR = 0x000000B4;
+  const CICM::Status S_CHANNEL_PEER_RESET = 0x000000B7;
+  const CICM::Status S_CHANNEL_MAX = 0x000000B8;
+  const CICM::Status S_CHANNEL_NOT_FOUND = 0x000000BB;
+  const CICM::Status S_CHANNEL_IO_ERROR = 0x000000BD;
+  const CICM::Status S_CHANNEL_DATA_INVALID = 0x000000BE;
+  const CICM::Status S_CHANNEL_DATA_INVALID_LEN = 0x000000C0;
+  const CICM::Status S_CHANNEL_BUFFER_LEN = 0x000000C3;
+  const CICM::Status S_CHANNEL_IN_GROUP = 0x000000C5;
+  const CICM::Status S_CHANNEL_CLASSIFICATION = 0x000000C6;
+  const CICM::Status S_BYPASS_DATARATE_EXCEEDED = 0x000000C9;
+  const CICM::Status S_BYPASS_DATALIMIT_EXCEEDED = 0x000000CA;
+  const CICM::Status S_INTEGRITY = 0x000000CC;
+  const CICM::Status S_AUTHENTICATION_FAILED = 0x000000CF;
+  const CICM::Status S_USER_AUTHENTICATED = 0x000000D1;
+  const CICM::Status S_USERNAME_INVALID = 0x000000D2;
+  const CICM::Status S_USER_EXISTS = 0x000000D4;
+  const CICM::Status S_USER_INVALID = 0x000000D7;
+  const CICM::Status S_ROLE_INVALID = 0x000000D8;
+  const CICM::Status S_ROLE_ASSOCIATED = 0x000000DB;
+  const CICM::Status S_ROLE_NOT_ASSOCIATED = 0x000000DD;
+  const CICM::Status S_ROLE_MAX = 0x000000DE;
+  const CICM::Status S_PASSWORD_INVALID = 0x000000E1;
+  const CICM::Status S_PASSWORD_INVALID_CHAR = 0x000000E2;
+  const CICM::Status S_PASSWORD_INVALID_LEN = 0x000000E4;
+  const CICM::Status S_SALT_INVALID = 0x000000E7;
+  const CICM::Status S_ITERATION_COUNT_INVALID = 0x000000E8;
+  const CICM::Status S_INSUFFICIENT_ENTROPY = 0x000000EB;
+
+  interface Iterator {
+    typedef CICM::UInt32 Status;
+    const CICM::Iterator::Status C_ITERATOR_HAS_NEXT = 0x00006031;
+    const CICM::Iterator::Status C_ITERATOR_NO_MORE = 0x00006032;
+
+    CICM::Status has_next(
+      out CICM::Iterator::Status has_next );
+  };
+
+  typedef CICM::CharString ModuleId;
+
+  interface CryptoModule {
+    readonly attribute CICM::ModuleId module_id;
+    readonly attribute CICM::CharString manufacturer;
+    readonly attribute CICM::CharString model;
+    readonly attribute CICM::CharString serial_number;
+    readonly attribute CICM::CharString module_version;
+    readonly attribute CICM::CharString software_version;
+    readonly attribute CICM::CharString driver_version;
+    readonly attribute CICM::CharString library_version;
+    readonly attribute CICM::RoleId role;
+    attribute CICM::CharString date_time;
+    readonly attribute CICM::SymKeyManager sym_key_manager;
+    readonly attribute CICM::AsymKeyManager asym_key_manager;
+    readonly attribute CICM::KeyDatabase key_database;
+    readonly attribute CICM::ChannelManager channel_manager;
+    readonly attribute CICM::ModuleEventManager event_manager;
+    readonly attribute CICM::PackageManager package_manager;
+    readonly attribute CICM::TokenManager token_manager;
+    readonly attribute CICM::UserManager user_manager;
+    readonly attribute CICM::LoginManager login_manager;
+    readonly attribute CICM::TestManager test_manager;
+    readonly attribute CICM::LogManager log_manager;
+
+    CICM::Status configure_fill_interface(
+      in  CICM::Buffer interface_parameters,
+      in  CICM::LocalPort fill_port );
+
+    CICM::Status reset();
+  };
+
+  interface CICMRoot {
+    CICM::Status get_module_by_id(
+      in  CICM::ModuleId id,
+      out CICM::CryptoModule crypto_module_ref );
+  };
+};
+	

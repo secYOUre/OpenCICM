@@ -1,0 +1,277 @@
+module CICM {
+  typedef CICM::CharString TokenRecord;
+  typedef CICM::CharString ModuleRecord;
+
+  interface TokenAssnIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::TokenRecord token_rec_ref );
+  };
+
+  interface ModuleAssnIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::ModuleRecord module_rec_ref );
+  };
+
+  interface TokenManager {
+    readonly attribute CICM::ModuleAssnIterator
+      module_association_iterator;
+
+    readonly attribute CICM::TokenAssnIterator
+      token_association_iterator;
+
+    CICM::Status associate(
+      out CICM::ModuleRecord module_rec,
+      out CICM::TokenRecord token_rec );
+
+    CICM::Status disassociate();
+
+    CICM::Status disassociate_missing_module(
+      in  CICM::ModuleRecord module_rec );
+
+    CICM::Status disassociate_missing_token(
+      in  CICM::TokenRecord token_rec );
+  };
+
+  typedef CICM::CharString UserId;
+  typedef CICM::CharString RoleId;
+
+  interface UserIdIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::UserId user_id );
+  };
+
+  interface RoleIdIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::RoleId role_id );
+  };
+
+  interface UserManager {
+    readonly attribute CICM::UserIdIterator user_iterator;
+    readonly attribute CICM::RoleIdIterator role_iterator;
+
+    CICM::Status add(
+      in  CICM::UserId user,
+      in  CICM::CharString password );
+
+    CICM::Status modify(
+      in  CICM::UserId user,
+      in  CICM::CharString password );
+
+    CICM::Status remove(
+      in  CICM::UserId user );
+
+    CICM::Status associate(
+      in  CICM::UserId user,
+      in  CICM::RoleId role );
+
+    CICM::Status disassociate(
+      in  CICM::UserId user,
+      in  CICM::RoleId role );
+  };
+
+  interface Login {
+    CICM::Status logout();
+  };
+
+  interface LoginManager {
+     CICM::Status login(
+      in  CICM::UserId user,
+      in  CICM::CharString password,
+      out CICM::Login login_ref );
+
+    CICM::Status login_auth_data(
+      in  CICM::UserId user,
+      in  CICM::CharString password,
+      in  CICM::Buffer auth_data,
+      out CICM::Login login_ref );
+  };
+
+  typedef CICM::CharString PackageId;
+
+  interface Package {
+    typedef CICM::UInt32 PackageType;
+    const CICM::Package::PackageType
+      C_PACKAGE_ALGORITHM = 0x00006054;
+
+    const CICM::Package::PackageType
+      C_PACKAGE_CONFIG_PARAMS = 0x00006057;
+
+    const CICM::Package::PackageType
+      C_PACKAGE_FPGA_IMAGE = 0x00006058;
+
+    const CICM::Package::PackageType
+      C_PACKAGE_POLICY_DB = 0x0000605B;
+
+    const CICM::Package::PackageType
+      C_PACKAGE_SOFTWARE = 0x0000605D;
+
+    readonly attribute CICM::PackageId id;
+
+    CICM::Status activate();
+    CICM::Status deactivate();
+    CICM::Status delete();
+  };
+
+  interface PackageIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::Package package_ref );
+  };
+
+  interface PackageImporter {
+    CICM::Status import_segment(
+      in  CICM::Buffer package_data );
+
+    CICM::Status complete(
+      out CICM::Package package_ref );
+
+    CICM::Status abort();
+  };
+
+  interface PackageManager {
+    readonly attribute CICM::PackageIterator package_iterator;
+
+    CICM::Status import_package(
+      in  CICM::Package::PackageType package_type,
+      out CICM::PackageImporter importer_ref );
+
+    CICM::Status import_package_with_key(
+      in  CICM::Package::PackageType package_type,
+      in  CICM::SymKey key_ref,
+      out CICM::PackageImporter importer_ref );
+
+    CICM::Status get_package_by_id(
+      in  CICM::PackageId package_id,
+      out CICM::Package package_ref );
+
+    CICM::Status reencrypt_software();
+  };
+
+  interface LogEntry {
+    readonly attribute CICM::UserId user_id;
+    readonly attribute CICM::RoleId role_id;
+    readonly attribute CICM::CharString message;
+    readonly attribute CICM::CharString date_time;
+
+    CICM::Status delete();
+  };
+
+  interface LogEntryIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::LogEntry log_entry_ref );
+  };
+
+  interface LogManager {
+    readonly attribute CICM::LogEntryIterator log_entry_iterator;
+
+    CICM::Status retrieve(
+      out CICM::Buffer log_ref );
+
+    CICM::Status destroy();
+  };
+
+  interface TestManager {
+    typedef CICM::UInt32 Status;
+    const CICM::TestManager::Status C_TEST_SUCCESS = 0x00006062;
+    const CICM::TestManager::Status C_TEST_FAILURE = 0x00006064;
+
+    CICM::Status run_test(
+      in  CICM::Buffer test_parameters,
+      out CICM::TestManager::Status status );
+
+    CICM::Status run_test_get_results(
+      in  CICM::Buffer test_parameters,
+      out CICM::Buffer test_results );
+  };
+
+  interface ModuleEventListener {
+    typedef CICM::UInt32 ModuleEvent;
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_ACCESS_TOKEN_INSERTED = 0x00002001;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_ACCESS_TOKEN_REMOVED = 0x00002002;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_ALARM = 0x00002004;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_FAILURE = 0x00002007;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_INSUFFICIENT_ENTROPY = 0x00002008;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_EXPIRED_HARD = 0x0000200B;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_EXPIRED_SOFT = 0x0000200D;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_FILL_COMPLETE = 0x0000200E;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_FILL_CONNECTED = 0x00002010;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_FILL_INITIATED = 0x00002013;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_MEMORY = 0x00002015;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_PROTO_MESSAGE = 0x00002016;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_LOG_FULL = 0x00002019;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_LOG_NEAR_FULL = 0x0000201A;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_LOGIN_FAILURE = 0x0000201C;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_NOT_READY_FOR_TRAFFIC = 0x0000201F;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_MGMT_ENTER = 0x00002020;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_MGMT_EXIT = 0x00002023;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_OFF = 0x00002025;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_OFF_FAILURE = 0x00002026;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_ON = 0x00002029;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_READY_FOR_TRAFFIC = 0x0000202A;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_REKEY_REQUEST = 0x0000202C;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_TEST_FAILURE = 0x0000202F;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_ZEROIZED = 0x00002031;
+
+    void event_occurred(
+      in  CICM::ModuleEventListener::ModuleEvent event,
+      in  CICM::Buffer event_data );
+  };
+
+  interface ModuleEventManager {
+    CICM::Status register(
+      in  CICM::ModuleEventListener::ModuleEvent event,
+      in  CICM::ModuleEventListener listener );
+
+    CICM::Status unregister(
+      in  CICM::ModuleEventListener::ModuleEvent event );
+  };
+};
+    

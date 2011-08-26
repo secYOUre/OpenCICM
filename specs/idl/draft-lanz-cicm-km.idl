@@ -1,0 +1,301 @@
+module CICM {
+  typedef CICM::CharString KeyId;
+
+  interface Key {
+    typedef CICM::UInt32 State;
+    const CICM::Key::State C_KEY_INVALID = 0x00006010;
+    const CICM::Key::State C_KEY_VALID_WRAPPED = 0x00006013;
+    const CICM::Key::State C_KEY_VALID_UNWRAPPED = 0x00006015;
+
+    typedef CICM::UInt32 UsageStatus;
+    const CICM::Key::UsageStatus C_KEY_USAGE_ALLOWED = 0x00006016;
+    const CICM::Key::UsageStatus C_KEY_USAGE_FORBIDDEN = 0x00006019;
+
+    attribute CICM::CharString identifier;
+    attribute CICM::UInt32 location;
+    attribute CICM::CharString alias;
+    attribute CICM::Classification classification;
+    attribute CICM::CharString caveat;
+    attribute CICM::CharString authority;
+    readonly attribute CICM::Key::State state;
+
+    CICM::Status wrap(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm );
+
+    CICM::Status unwrap(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm );
+
+    CICM::Status export(
+      out CICM::Buffer key_material );
+
+    CICM::Status export_via_fill_interface(
+      in  CICM::LocalPort fill_port );
+
+    CICM::Status zeroize();
+  };
+
+  interface SymKey : CICM::Key {
+    typedef CICM::UInt32 Usage;
+    const CICM::SymKey::Usage
+      C_USAGE_GENERATE_KEYSTREAM = 0x0000601A;
+
+    const CICM::SymKey::Usage
+      C_USAGE_KEY_PRODUCTION_KEY = 0x0000601C;
+
+    const CICM::SymKey::Usage
+      C_USAGE_MESSAGE_AUTHENTICATION_CODE = 0x0000601F;
+
+    const CICM::SymKey::Usage
+      C_USAGE_SYM_DATA_ENCIPHERMENT = 0x00006020;
+
+    const CICM::SymKey::Usage
+      C_USAGE_SYM_KEY_ENCIPHERMENT = 0x00006023;
+
+    readonly attribute CICM::UInt32 update_count;
+
+    CICM::Status update();
+
+    CICM::Status update_with_algo(
+      in  CICM::SymEncrAlgorithmId algorithm );
+
+    CICM::Status wrap_and_copy(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm,
+      out CICM::SymKey wrapped_key );
+
+    CICM::Status unwrap_and_copy(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm,
+      out CICM::SymKey unwrapped_key );
+
+    CICM::Status validate_key_usage(
+      in  CICM::SymKey::Usage usage_type,
+      out CICM::Key::UsageStatus valid );
+  };
+
+  interface AsymKey : CICM::Key {
+    typedef CICM::UInt32 Usage;
+    const CICM::AsymKey::Usage
+      C_USAGE_ASYM_DATA_ENCIPHERMENT = 0x00006001;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_ASYM_KEY_ENCIPHERMENT = 0x00006002;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_CERT_SIGN = 0x00006004;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_CRL_SIGN = 0x00006007;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_DIGITAL_SIGNATURE = 0x00006008;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_INFRA_KEY_AGREEMENT = 0x0000600B;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_P2P_KEY_AGREEMENT = 0x0000600D;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_SEED = 0x0000600E;
+
+    CICM::Status wrap_and_copy(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm,
+      out CICM::AsymKey wrapped_key );
+
+    CICM::Status unwrap_and_copy(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm,
+      out CICM::AsymKey unwrapped_key );
+
+    CICM::Status validate_key_usage(
+      in  CICM::AsymKey::Usage usage_type,
+      out CICM::Key::UsageStatus valid );
+  };
+
+  interface SymKeyIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::SymKey sym_key_ref );
+  };
+
+  interface AsymKeyIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::AsymKey asym_key_ref );
+  };
+
+  interface KeyProtocolSender : CICM::Negotiator {
+    typedef CICM::UInt32 Condition;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_OKAY = 0x00006045;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_DONE = 0x00006046;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_ERROR = 0x00006049;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_DISPLAY = 0x0000604A;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_ABORTED = 0x0000604C;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_MESSAGE_INVALID = 0x0000604F;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_MESSAGE_INTEGRITY = 0x00006051;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_PROTOCOL_VIOLATION = 0x00006052;
+
+    CICM::Status put_into_module(
+      in  CICM::ProtocolId protocol,
+      in  CICM::Buffer message,
+      out CICM::KeyProtocolSender::Condition condition );
+
+    CICM::Status put_into_module_algo(
+      in  CICM::ProtocolId protocol,
+      in  CICM::Buffer message,
+      in  CICM::SymEncrAlgorithmId algorithm,
+      out CICM::KeyProtocolSender::Condition condition );
+  };
+
+  interface KeyProtocolReceiver {
+    typedef CICM::UInt32 Condition;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_OKAY = 0x00006034;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_DONE = 0x00006037;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_BUSY = 0x00006038;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_ERROR = 0x0000603B;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_ABORTED = 0x0000603D;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_MESSAGE_INVALID = 0x0000603E;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_MESSAGE_INTEGRITY = 0x00006040;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_VIOLATION = 0x00006043;
+
+    CICM::Status abort();
+
+    CICM::Status get_from_module(
+      in  CICM::ProtocolId protocol,
+      out CICM::Buffer message,
+      out CICM::KeyProtocolReceiver::Condition condition );
+
+    CICM::Status get_key(
+      out CICM::SymKey key_ref );
+  };
+
+  interface SymKeyManager {
+    readonly attribute CICM::SymKeyIterator symkey_iterator;
+    readonly attribute CICM::KeyProtocolSender key_protocol_sender;
+    readonly attribute CICM::KeyProtocolReceiver key_protocol_receiver;
+
+    CICM::Status get_key_by_id(
+      in  CICM::KeyId key_id,
+      out CICM::SymKey key_ref );
+
+    CICM::Status get_key_by_phys_location(
+      in  CICM::UInt32 phys_location,
+      out CICM::SymKey key_ref );
+
+    CICM::Status get_key_last_filled(
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key(
+      in  CICM::Buffer key_material,
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key_into_phys_location(
+      in  CICM::Buffer key_material,
+      in  CICM::UInt32 phys_location,
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key_via_fill(
+      in  CICM::LocalPort fill_port,
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key_via_fill_into_phys_location(
+      in  CICM::LocalPort fill_port,
+      in  CICM::UInt32 phys_location,
+      out CICM::SymKey key_ref );
+
+    CICM::Status generate_key(
+      in  CICM::SymEncrAlgorithmId algorithm,
+      out CICM::SymKey key_ref );
+
+    CICM::Status derive_key(
+      in  CICM::CharString password,
+      in  CICM::Buffer salt,
+      in  CICM::UInt32 iteration_count,
+      in  CICM::HashAlgorithmId hash_algorithm,
+      in  CICM::SymEncrAlgorithmId algorithm,
+      out CICM::SymKey key_ref );
+
+    CICM::Status derive_deterministic_key(
+      in  CICM::SymKey key_prod_key,
+      in  CICM::CharString shared_secret,
+      in  CICM::SymEncrAlgorithmId algorithm,
+      out CICM::SymKey key_ref );
+  };
+
+  interface AsymKeyManager {
+    readonly attribute CICM::AsymKeyIterator asymkey_iterator;
+
+    CICM::Status get_key_by_id(
+      in  CICM::KeyId key_id,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status get_key_by_phys_location(
+      in  CICM::UInt32 phys_location,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status get_key_last_filled(
+      out CICM::AsymKey key_ref );
+
+    CICM::Status import_key(
+      in  CICM::Buffer key_material,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status import_key_into_phys_location(
+      in  CICM::Buffer key_material,
+      in  CICM::UInt32 phys_location,
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key_via_fill(
+      in  CICM::LocalPort fill_port,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status import_key_via_fill_into_phys_location(
+      in  CICM::LocalPort fill_port,
+      in  CICM::UInt32 phys_location,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status generate_key_pair(
+      in  CICM::AsymEncrAlgorithmId algorithm,
+      out CICM::AsymKey key_ref );
+  };
+
+  interface KeyDatabase {
+    CICM::Status zeroize();
+    CICM::Status reencrypt();
+  };
+};
+    

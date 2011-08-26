@@ -1,0 +1,1797 @@
+/**
+ * OpenCICM - Open Common Interface to Cryptographic Modules 
+ *
+ */
+
+module CICM {
+  typedef unsigned long UInt32;
+  typedef string CharString;
+  typedef sequence<octet> Buffer;
+
+  typedef CICM::UInt32 LocalPort;
+  typedef CICM::UInt32 RemotePort;
+
+  const CICM::LocalPort FILL_INTERFACE_PORT = 0xFFFFFFEE;
+  const CICM::LocalPort IMPLICIT_LOCAL_PORT = 0xFFFFFFBB;
+  const CICM::RemotePort IMPLICIT_REMOTE_PORT = 0xFFFFFF99;
+
+  typedef CICM::UInt32 Classification;
+  const CICM::Classification C_LEVEL_CONFIDENTIAL = 0x00006029;
+  const CICM::Classification C_LEVEL_SECRET = 0x0000602A;
+  const CICM::Classification C_LEVEL_TOP_SECRET = 0x0000602C;
+  const CICM::Classification C_LEVEL_UNCLASSIFIED = 0x0000602F;
+
+  typedef CICM::UInt32 Status;
+  const CICM::Status S_OK = 0x00000000;
+  const CICM::Status S_GENERAL_ERROR = 0x00000003;
+  const CICM::Status S_NON_FUNCTIONAL = 0x00000005;
+  const CICM::Status S_OPERATION_FAILED = 0x00000006;
+  const CICM::Status S_POLICY_VIOLATION = 0x00000009;
+  const CICM::Status S_MODULE_RESOURCES = 0x0000000A;
+  const CICM::Status S_HOST_RESOURCES = 0x0000000C;
+  const CICM::Status S_INVALID_STATE = 0x0000000F;
+  const CICM::Status S_ALARM_STATE = 0x00000011;
+  const CICM::Status S_MODULE_NOT_AVAILABLE = 0x00000012;
+  const CICM::Status S_TIMEOUT = 0x00000014;
+  const CICM::Status S_NOT_AUTHENTICATED = 0x00000017;
+  const CICM::Status S_NOT_AUTHORIZED = 0x00000018;
+  const CICM::Status S_MODULE_DOES_NOT_EXIST = 0x0000001B;
+  const CICM::Status S_MODULE_IN_USE = 0x0000001D;
+  const CICM::Status S_NOT_AVAILABLE = 0x0000001E;
+  const CICM::Status S_INVALID_VECTOR = 0x00000021;
+  const CICM::Status S_INVALID_DATA_BUFFER = 0x00000022;
+  const CICM::Status S_KEY_USED_INVALID = 0x00000024;
+  const CICM::Status S_KEY_USED_EXPIRED = 0x00000027;
+  const CICM::Status S_KEY_USED_CLASSIFICATION = 0x00000028;
+  const CICM::Status S_KEY_USED_WRAPPED = 0x0000002B;
+  const CICM::Status S_KEY_USED_CONTEXT = 0x0000002D;
+  const CICM::Status S_KEY_USED_COMPONENT_NOT_AVAIL = 0x0000002E;
+  const CICM::Status S_KEY_INVALID = 0x00000030;
+  const CICM::Status S_KEY_EXPIRED = 0x00000033;
+  const CICM::Status S_KEY_INCOMPATIBLE = 0x00000035;
+  const CICM::Status S_KEY_CLASSIFICATION = 0x00000036;
+  const CICM::Status S_KEY_WRAPPED = 0x00000039;
+  const CICM::Status S_KEY_NOT_WRAPPED = 0x0000003A;
+  const CICM::Status S_KEY_NOT_WRAPPABLE = 0x0000003C;
+  const CICM::Status S_KEY_NOT_EXPORTABLE = 0x0000003F;
+  const CICM::Status S_KEY_WRAPPED_EXISTS = 0x00000041;
+  const CICM::Status S_KEY_UNWRAPPED_EXISTS = 0x00000042;
+  const CICM::Status S_KEY_UPDATE_MAX = 0x00000044;
+  const CICM::Status S_KEY_INVALID_ID = 0x00000047;
+  const CICM::Status S_KEY_PHYSICAL_LOC = 0x00000048;
+  const CICM::Status S_KEY_ILLEGAL_CONVERSION = 0x0000004B;
+  const CICM::Status S_KEY_MALFORMED = 0x0000004D;
+  const CICM::Status S_KEY_METADATA_MALFORMED = 0x0000004E;
+  const CICM::Status S_KEY_NO_NEXT = 0x00000050;
+  const CICM::Status S_KEY_WRONG_TYPE = 0x00000053;
+  const CICM::Status S_KEY_FILL_DEVICE_NOT_CONNECTED = 0x00000055;
+  const CICM::Status S_KEY_FILL_NOT_INITIATED = 0x00000056;
+  const CICM::Status S_KEY_TRUST_ANCHOR = 0x00000059;
+  const CICM::Status S_LOCAL_PORT_INVALID = 0x0000005A;
+  const CICM::Status S_LOCAL_PORT_INCOMPATIBLE = 0x0000005C;
+  const CICM::Status S_LOCAL_PORT_IN_USE = 0x0000005F;
+  const CICM::Status S_REMOTE_PORT_INVALID = 0x00000060;
+  const CICM::Status S_REMOTE_PORT_IN_USE = 0x00000063;
+  const CICM::Status S_ALGO_INVALID = 0x00000065;
+  const CICM::Status S_ALGO_INCOMPATIBLE = 0x00000066;
+  const CICM::Status S_TOKEN_NOT_PRESENT = 0x00000069;
+  const CICM::Status S_TOKEN_ADMIN_NOT_PRESENT = 0x0000006A;
+  const CICM::Status S_TOKEN_ACCESS = 0x0000006C;
+  const CICM::Status S_TOKEN_RESOURCES = 0x0000006F;
+  const CICM::Status S_TOKEN_ASSOC_EXISTS = 0x00000071;
+  const CICM::Status S_TOKEN_ASSOC_AT_MODULE = 0x00000072;
+  const CICM::Status S_TOKEN_ASSOC_AT_TOKEN = 0x00000074;
+  const CICM::Status S_TOKEN_ASSOC_NOT_EXIST = 0x00000077;
+  const CICM::Status S_TOKEN_ASSOC_GENERAL = 0x00000078;
+  const CICM::Status S_TOKEN_DISASSOC_GENERAL = 0x0000007B;
+  const CICM::Status S_TOKEN_REC_NOT_FOUND = 0x0000007D;
+  const CICM::Status S_TOKEN_TIMEOUT = 0x0000007E;
+  const CICM::Status S_TOKEN_LAST_ASSOCIATED = 0x00000081;
+  const CICM::Status S_PACKAGE_NOT_ACTIVATABLE = 0x00000082;
+  const CICM::Status S_PACKAGE_ACTIVATED = 0x00000084;
+  const CICM::Status S_PACKAGE_NOT_ACTIVE = 0x00000087;
+  const CICM::Status S_PACKAGE_INVALID = 0x00000088;
+  const CICM::Status S_PACKAGE_TYPE_INVALID = 0x0000008B;
+  const CICM::Status S_PACKAGE_KEY_NOT_AVAILABLE = 0x0000008D;
+  const CICM::Status S_PACKAGE_KEY_NOT_SPECIFIED = 0x0000008E;
+  const CICM::Status S_LOG_ENTRY_INVALID = 0x00000090;
+  const CICM::Status S_EVENT_REGISTERED = 0x00000093;
+  const CICM::Status S_EVENT_NOT_REGISTERED = 0x00000095;
+  const CICM::Status S_EVENT_NOT_SUPPORTED = 0x00000096;
+  const CICM::Status S_TRUSTED_DISPLAY = 0x00000099;
+  const CICM::Status S_NEGOTIATION_ABORTED = 0x0000009A;
+  const CICM::Status S_NEGOTIATION_FAILURE = 0x0000009C;
+  const CICM::Status S_NEGOTIATION_IN_PROGRESS = 0x0000009F;
+  const CICM::Status S_NEGOTIATION_NOT_IN_PROGRESS = 0x000000A0;
+  const CICM::Status S_NEGOTIATION_TIMEOUT = 0x000000A3;
+  const CICM::Status S_CERT_LOCAL_INVALID = 0x000000A5;
+  const CICM::Status S_CERT_LOCAL_EXPIRED = 0x000000A6;
+  const CICM::Status S_CERT_REMOTE_INVALID = 0x000000A9;
+  const CICM::Status S_CERT_REMOTE_EXPIRED = 0x000000AA;
+  const CICM::Status S_CERT_REMOTE_PATH = 0x000000AC;
+  const CICM::Status S_PROTO_INVALID = 0x000000AF;
+  const CICM::Status S_PROTO_INCOMPATIBLE = 0x000000B1;
+  const CICM::Status S_PROTO_UNDETERMINED = 0x000000B2;
+  const CICM::Status S_CHANNEL_ERROR = 0x000000B4;
+  const CICM::Status S_CHANNEL_PEER_RESET = 0x000000B7;
+  const CICM::Status S_CHANNEL_MAX = 0x000000B8;
+  const CICM::Status S_CHANNEL_NOT_FOUND = 0x000000BB;
+  const CICM::Status S_CHANNEL_IO_ERROR = 0x000000BD;
+  const CICM::Status S_CHANNEL_DATA_INVALID = 0x000000BE;
+  const CICM::Status S_CHANNEL_DATA_INVALID_LEN = 0x000000C0;
+  const CICM::Status S_CHANNEL_BUFFER_LEN = 0x000000C3;
+  const CICM::Status S_CHANNEL_IN_GROUP = 0x000000C5;
+  const CICM::Status S_CHANNEL_CLASSIFICATION = 0x000000C6;
+  const CICM::Status S_BYPASS_DATARATE_EXCEEDED = 0x000000C9;
+  const CICM::Status S_BYPASS_DATALIMIT_EXCEEDED = 0x000000CA;
+  const CICM::Status S_INTEGRITY = 0x000000CC;
+  const CICM::Status S_AUTHENTICATION_FAILED = 0x000000CF;
+  const CICM::Status S_USER_AUTHENTICATED = 0x000000D1;
+  const CICM::Status S_USERNAME_INVALID = 0x000000D2;
+  const CICM::Status S_USER_EXISTS = 0x000000D4;
+  const CICM::Status S_USER_INVALID = 0x000000D7;
+  const CICM::Status S_ROLE_INVALID = 0x000000D8;
+  const CICM::Status S_ROLE_ASSOCIATED = 0x000000DB;
+  const CICM::Status S_ROLE_NOT_ASSOCIATED = 0x000000DD;
+  const CICM::Status S_ROLE_MAX = 0x000000DE;
+  const CICM::Status S_PASSWORD_INVALID = 0x000000E1;
+  const CICM::Status S_PASSWORD_INVALID_CHAR = 0x000000E2;
+  const CICM::Status S_PASSWORD_INVALID_LEN = 0x000000E4;
+  const CICM::Status S_SALT_INVALID = 0x000000E7;
+  const CICM::Status S_ITERATION_COUNT_INVALID = 0x000000E8;
+  const CICM::Status S_INSUFFICIENT_ENTROPY = 0x000000EB;
+
+  interface Iterator {
+    typedef CICM::UInt32 Status;
+    const CICM::Iterator::Status C_ITERATOR_HAS_NEXT = 0x00006031;
+    const CICM::Iterator::Status C_ITERATOR_NO_MORE = 0x00006032;
+
+    CICM::Status has_next(
+      out CICM::Iterator::Status has_next );
+  };
+
+  typedef CICM::CharString ModuleId;
+
+  typedef CICM::Buffer MACBuffer;
+  typedef CICM::Buffer SigBuffer;
+  typedef CICM::Buffer HashBuffer;
+  typedef CICM::Buffer Vector;
+
+  typedef CICM::UInt32 TransId;
+
+  typedef CICM::CharString HashAlgorithmId;
+
+  typedef CICM::CharString AsymEncrAlgorithmId;
+  const CICM::AsymEncrAlgorithmId IMPLICIT_ASYM_ENCR_ALGO = "IMPLICIT";
+
+  typedef CICM::CharString AsymSigAlgorithmId;
+  const CICM::AsymSigAlgorithmId IMPLICIT_ASYM_SIG_ALGO = "IMPLICIT";
+
+  typedef CICM::CharString SymEncrAlgorithmId;
+  const CICM::SymEncrAlgorithmId IMPLICIT_SYM_ENCR_ALGO = "IMPLICIT";
+
+  typedef CICM::CharString SymMacAlgorithmId;
+  const CICM::SymMacAlgorithmId IMPLICIT_SYM_MAC_ALGO = "IMPLICIT";
+
+  typedef CICM::CharString KeyWrapAlgorithmId;
+  const CICM::KeyWrapAlgorithmId IMPLICIT_KEY_WRAP_ALGO = "IMPLICIT";
+
+  typedef CICM::CharString ProtocolId;
+  const CICM::ProtocolId IMPLICIT_PROTOCOL_ID = "IMPLICIT";
+
+
+  typedef CICM::CharString KeyId;
+
+  interface Key {
+    typedef CICM::UInt32 State;
+    const CICM::Key::State C_KEY_INVALID = 0x00006010;
+    const CICM::Key::State C_KEY_VALID_WRAPPED = 0x00006013;
+    const CICM::Key::State C_KEY_VALID_UNWRAPPED = 0x00006015;
+
+    typedef CICM::UInt32 UsageStatus;
+    const CICM::Key::UsageStatus C_KEY_USAGE_ALLOWED = 0x00006016;
+    const CICM::Key::UsageStatus C_KEY_USAGE_FORBIDDEN = 0x00006019;
+
+    attribute CICM::CharString identifier;
+    attribute CICM::UInt32 location;
+    attribute CICM::CharString alias;
+    attribute CICM::Classification classification;
+    attribute CICM::CharString caveat;
+    attribute CICM::CharString authority;
+    readonly attribute CICM::Key::State status;
+
+    CICM::Status wrap(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm );
+
+    CICM::Status unwrap(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm );
+
+    CICM::Status export(
+      out CICM::Buffer key_material );
+
+    CICM::Status export_via_fill_interface(
+      in  CICM::LocalPort fill_port );
+
+    CICM::Status zeroize();
+  };
+
+  interface SymKey : CICM::Key {
+    typedef CICM::UInt32 Usage;
+    const CICM::SymKey::Usage
+      C_USAGE_GENERATE_KEYSTREAM = 0x0000601A;
+
+    const CICM::SymKey::Usage
+      C_USAGE_KEY_PRODUCTION_KEY = 0x0000601C;
+
+    const CICM::SymKey::Usage
+      C_USAGE_MESSAGE_AUTHENTICATION_CODE = 0x0000601F;
+
+    const CICM::SymKey::Usage
+      C_USAGE_SYM_DATA_ENCIPHERMENT = 0x00006020;
+
+    const CICM::SymKey::Usage
+      C_USAGE_SYM_KEY_ENCIPHERMENT = 0x00006023;
+
+    readonly attribute CICM::UInt32 update_count;
+
+    CICM::Status update();
+
+    CICM::Status update_with_algo(
+      in  CICM::SymEncrAlgorithmId algorithm );
+
+    CICM::Status wrap_and_copy(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm,
+      out CICM::SymKey wrapped_key );
+
+    CICM::Status unwrap_and_copy(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm,
+      out CICM::SymKey unwrapped_key );
+
+    CICM::Status validate_key_usage(
+      in  CICM::SymKey::Usage usage_type,
+      out CICM::Key::UsageStatus valid );
+  };
+
+  interface AsymKey : CICM::Key {
+    typedef CICM::UInt32 Usage;
+    const CICM::AsymKey::Usage
+      C_USAGE_ASYM_DATA_ENCIPHERMENT = 0x00006001;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_ASYM_KEY_ENCIPHERMENT = 0x00006002;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_CERT_SIGN = 0x00006004;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_CRL_SIGN = 0x00006007;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_DIGITAL_SIGNATURE = 0x00006008;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_INFRA_KEY_AGREEMENT = 0x0000600B;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_P2P_KEY_AGREEMENT = 0x0000600D;
+
+    const CICM::AsymKey::Usage
+      C_USAGE_SEED = 0x0000600E;
+
+    CICM::Status wrap_and_copy(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm,
+      out CICM::AsymKey wrapped_key );
+
+    CICM::Status unwrap_and_copy(
+      in  CICM::Key kek,
+      in  CICM::KeyWrapAlgorithmId algorithm,
+      out CICM::AsymKey unwrapped_key );
+
+    CICM::Status validate_key_usage(
+      in  CICM::AsymKey::Usage usage_type,
+      out CICM::Key::UsageStatus valid );
+  };
+
+  interface SymKeyIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::SymKey sym_key_ref );
+  };
+
+  interface AsymKeyIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::AsymKey asym_key_ref );
+  };
+
+  interface PeerInfo {
+    readonly attribute CICM::CharString peer_name;
+    readonly attribute CICM::Classification classification;
+    readonly attribute CICM::CharString compartment;
+    readonly attribute CICM::CharString message;
+  };
+
+  interface Negotiator {
+    CICM::Status get_remote_info(
+      out CICM::PeerInfo peer_info );
+
+    CICM::Status abort_negotiation();
+  };
+
+
+  interface KeyProtocolSender : CICM::Negotiator {
+    typedef CICM::UInt32 Condition;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_OKAY = 0x00006045;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_DONE = 0x00006046;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_ERROR = 0x00006049;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_DISPLAY = 0x0000604A;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_ABORTED = 0x0000604C;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_MESSAGE_INVALID = 0x0000604F;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_MESSAGE_INTEGRITY = 0x00006051;
+
+    const CICM::KeyProtocolSender::Condition
+      C_PROTOCOL_SEND_PROTOCOL_VIOLATION = 0x00006052;
+
+    CICM::Status put_into_module(
+      in  CICM::ProtocolId protocol,
+      in  CICM::Buffer message,
+      out CICM::KeyProtocolSender::Condition condition );
+
+    CICM::Status put_into_module_algo(
+      in  CICM::ProtocolId protocol,
+      in  CICM::Buffer message,
+      in  CICM::SymEncrAlgorithmId algorithm,
+      out CICM::KeyProtocolSender::Condition condition );
+  };
+
+  interface KeyProtocolReceiver {
+    typedef CICM::UInt32 Condition;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_OKAY = 0x00006034;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_DONE = 0x00006037;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_BUSY = 0x00006038;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_ERROR = 0x0000603B;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_ABORTED = 0x0000603D;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_MESSAGE_INVALID = 0x0000603E;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_MESSAGE_INTEGRITY = 0x00006040;
+
+    const CICM::KeyProtocolReceiver::Condition
+      C_PROTOCOL_RECEIVE_VIOLATION = 0x00006043;
+
+    CICM::Status abort();
+
+    CICM::Status get_from_module(
+      in  CICM::ProtocolId protocol,
+      out CICM::Buffer message,
+      out CICM::KeyProtocolReceiver::Condition condition );
+
+    CICM::Status get_key(
+      out CICM::SymKey key_ref );
+  };
+
+  interface SymKeyManager {
+    readonly attribute CICM::SymKeyIterator symkey_iterator;
+    readonly attribute CICM::KeyProtocolSender key_protocol_sender;
+    readonly attribute CICM::KeyProtocolReceiver key_protocol_receiver;
+
+    CICM::Status get_key_by_id(
+      in  CICM::KeyId key_id,
+      out CICM::SymKey key_ref );
+
+    CICM::Status get_key_by_phys_location(
+      in  CICM::UInt32 phys_location,
+      out CICM::SymKey key_ref );
+
+    CICM::Status get_key_last_filled(
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key(
+      in  CICM::Buffer key_material,
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key_into_phys_location(
+      in  CICM::Buffer key_material,
+      in  CICM::UInt32 phys_location,
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key_via_fill(
+      in  CICM::LocalPort fill_port,
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key_via_fill_into_phys_location(
+      in  CICM::LocalPort fill_port,
+      in  CICM::UInt32 phys_location,
+      out CICM::SymKey key_ref );
+
+    CICM::Status generate_key(
+      in  CICM::SymEncrAlgorithmId algorithm,
+      out CICM::SymKey key_ref );
+
+    CICM::Status derive_key(
+      in  CICM::CharString password,
+      in  CICM::Buffer salt,
+      in  CICM::UInt32 iteration_count,
+      in  CICM::HashAlgorithmId hash_algorithm,
+      in  CICM::SymEncrAlgorithmId algorithm,
+      out CICM::SymKey key_ref );
+
+    CICM::Status derive_deterministic_key(
+      in  CICM::SymKey key_prod_key,
+      in  CICM::CharString shared_secret,
+      in  CICM::SymEncrAlgorithmId algorithm,
+      out CICM::SymKey key_ref );
+  };
+
+  interface AsymKeyManager {
+    readonly attribute CICM::AsymKeyIterator asymkey_iterator;
+
+    CICM::Status get_key_by_id(
+      in  CICM::KeyId key_id,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status get_key_by_phys_location(
+      in  CICM::UInt32 phys_location,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status get_key_last_filled(
+      out CICM::AsymKey key_ref );
+
+    CICM::Status import_key(
+      in  CICM::Buffer key_material,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status import_key_into_phys_location(
+      in  CICM::Buffer key_material,
+      in  CICM::UInt32 phys_location,
+      out CICM::SymKey key_ref );
+
+    CICM::Status import_key_via_fill(
+      in  CICM::LocalPort fill_port,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status import_key_via_fill_into_phys_location(
+      in  CICM::LocalPort fill_port,
+      in  CICM::UInt32 phys_location,
+      out CICM::AsymKey key_ref );
+
+    CICM::Status generate_key_pair(
+      in  CICM::AsymEncrAlgorithmId algorithm,
+      out CICM::AsymKey key_ref );
+  };
+
+  interface KeyDatabase {
+    CICM::Status zeroize();
+    CICM::Status reencrypt();
+  };
+    
+
+  interface ChannelEventListener {
+    typedef CICM::UInt32 ChannelEvent;
+    const CICM::ChannelEventListener::ChannelEvent
+      C_CHANNEL_DATA_AVAILABLE = 0x00004001;
+
+    const CICM::ChannelEventListener::ChannelEvent
+      C_CHANNEL_ERROR = 0x00004002;
+
+    const CICM::ChannelEventListener::ChannelEvent
+      C_CHANNEL_INSUFFICIENT_ENTROPY = 0x00004004;
+
+    const CICM::ChannelEventListener::ChannelEvent
+      C_CHANNEL_LOST_SYNC = 0x00004007;
+
+    const CICM::ChannelEventListener::ChannelEvent
+      C_CHANNEL_PEER_RESET = 0x00004008;
+
+    void event_occurred(
+      in  CICM::ChannelEventListener::ChannelEvent event,
+      in  CICM::Buffer event_data );
+  };
+
+  interface ChannelEventManager {
+    CICM::Status register(
+      in  CICM::ChannelEventListener::ChannelEvent event,
+      in  CICM::ChannelEventListener listener );
+
+    CICM::Status unregister(
+      in  CICM::ChannelEventListener::ChannelEvent event );
+  };
+
+  interface Channel {
+    readonly attribute CICM::ChannelEventManager event_manager;
+  };
+
+  interface Stream : CICM::Channel {};
+
+  interface WriteStream : CICM::Stream {
+    typedef CICM::UInt32 WriteStatus;
+    const CICM::WriteStream::WriteStatus C_WRITE_NOT_READY = 0x00006067;
+    const CICM::WriteStream::WriteStatus C_WRITE_READY = 0x00006068;
+  };
+
+  interface ReadStream : CICM::Stream {
+    typedef CICM::UInt32 ReadStatus;
+    const CICM::ReadStream::ReadStatus C_READ_NOT_READY = 0x0000605E;
+    const CICM::ReadStream::ReadStatus C_READ_READY = 0x00006061;
+  };
+
+  interface Controller : CICM::Channel {
+    CICM::Status destroy();
+  };
+
+  interface MultiDomainController : CICM::Controller {
+    readonly attribute CICM::LocalPort local_port;
+    readonly attribute CICM::RemotePort remote_port;
+  };
+
+  interface SymKeyController : CICM::Controller {
+    readonly attribute CICM::SymKey key;
+
+    CICM::Status update_key();
+
+    CICM::Status update_key_with_algo(
+      in  CICM::SymEncrAlgorithmId algorithm );
+
+    CICM::Status rollover_key();
+
+    CICM::Status rollover_key_with_key(
+      in  CICM::SymKey next_key );
+  };
+
+  interface AsymKeyController : CICM::Controller {
+    readonly attribute CICM::AsymKey key;
+  };
+
+  interface NegotiatedController :
+    CICM::MultiDomainController,
+    CICM::AsymKeyController,
+    CICM::Negotiator {
+
+    readonly attribute CICM::Classification negotiated_grade;
+
+    CICM::Status renegotiate();
+
+    CICM::Status initiate_grade_change(
+      in  CICM::Classification new_grade );
+
+    CICM::Status acknowledge_grade_change();
+  };
+
+  interface SetVectorController : CICM::Controller {
+    readonly attribute CICM::Vector vec;
+
+    CICM::Status set_vector(
+      in  CICM::Vector vec );
+
+    CICM::Status set_vector_no_check(
+      in  CICM::Vector vec );
+
+    CICM::Status reset_vector();
+  };
+
+  interface GenVectorController : CICM::SetVectorController {
+    CICM::Status generate_vector();
+    CICM::Status generate_vector_existing_state();
+  };
+
+  interface ResyncController : CICM::Controller {
+    CICM::Status resync();
+    CICM::Status resync_with_sync_vector(
+      in  CICM::Vector vec );
+  };
+
+  interface ControllerGroup {
+    CICM::Status add(
+      in CICM::Controller controller_ref );
+  };
+
+  interface Conduit :
+    CICM::Controller,
+    CICM::Stream {
+  };
+
+  interface AbstractMACConduit : CICM::Conduit {
+    readonly attribute CICM::SymKey mac_key;
+    readonly attribute CICM::SymMacAlgorithmId mac_algorithm;
+
+    CICM::Status end_get_mac(
+      out CICM::MACBuffer mac );
+  };
+
+  interface AbstractSignConduit : CICM::Conduit {
+    readonly attribute CICM::AsymKey sign_key;
+    readonly attribute CICM::AsymSigAlgorithmId sign_algorithm;
+
+    CICM::Status end_get_signature(
+      out CICM::SigBuffer signature );
+  };
+
+  interface AbstractVerifyConduit : CICM::Conduit {
+    typedef CICM::UInt32 VerifyStatus;
+    const CICM::AbstractVerifyConduit::VerifyStatus
+      C_DATA_VERIFIED = 0x00006025;
+
+    const CICM::AbstractVerifyConduit::VerifyStatus
+      C_DATA_NOT_VERIFIED = 0x00006026;
+
+  };
+
+  interface AbstractMACVerifyConduit : CICM::AbstractVerifyConduit {
+    readonly attribute CICM::SymKey verify_key;
+    readonly attribute CICM::SymMacAlgorithmId verify_algorithm;
+
+    CICM::Status end_get_verified(
+      in  CICM::MACBuffer mac,
+      out CICM::AbstractVerifyConduit::VerifyStatus status );
+  };
+
+  interface AbstractSigVerifyConduit : CICM::AbstractVerifyConduit {
+    readonly attribute CICM::AsymKey verify_key;
+    readonly attribute CICM::AsymSigAlgorithmId verify_algorithm;
+
+    CICM::Status end_get_verified(
+      in  CICM::SigBuffer signature,
+      out CICM::AbstractVerifyConduit::VerifyStatus status );
+  };
+
+  module Encrypt {
+    interface Stream : CICM::WriteStream {
+      CICM::Status encrypt(
+        in  CICM::Buffer buffer );
+
+      CICM::Status encrypt_non_blocking(
+        in  CICM::Buffer buffer,
+        in  CICM::TransId transaction_id );
+
+      CICM::Status encrypt_poll(
+        in  CICM::TransId transaction_id,
+        out CICM::WriteStream::WriteStatus status );
+    };
+
+    interface KeyWrapStream : CICM::Stream {
+      CICM::Status wrap_key(
+        in CICM::Key key_ref );
+    };
+
+    interface Controller :
+      CICM::MultiDomainController,
+      CICM::SymKeyController,
+      CICM::GenVectorController,
+      CICM::ResyncController {};
+
+    interface NegotiatedController :
+      CICM::NegotiatedController,
+      CICM::GenVectorController,
+      CICM::ResyncController {};
+
+    interface Conduit :
+      CICM::Conduit,
+      CICM::Encrypt::Controller,
+      CICM::Encrypt::Stream {};
+
+    interface NegotiatedConduit :
+      CICM::Conduit,
+      CICM::Encrypt::NegotiatedController,
+      CICM::Encrypt::Stream {};
+
+    interface WithMACConduit :
+      CICM::AbstractMACConduit,
+      CICM::Encrypt::Conduit {};
+
+    interface WithMACNegotiatedConduit :
+      CICM::AbstractMACConduit,
+      CICM::Encrypt::NegotiatedConduit {};
+
+    interface WithSignConduit :
+      CICM::AbstractSignConduit,
+      CICM::Encrypt::Conduit {};
+
+    interface WithSignNegotiatedConduit :
+      CICM::AbstractSignConduit,
+      CICM::Encrypt::NegotiatedConduit {};
+
+    interface KeyWrapConduit :
+      CICM::Encrypt::Controller,
+      CICM::Encrypt::KeyWrapStream {};
+
+    interface ControllerNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Encrypt::NegotiatedController controller_ref );
+    };
+
+    interface Negotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Encrypt::NegotiatedConduit conduit_ref );
+    };
+
+    interface WithMACNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Encrypt::WithMACNegotiatedConduit conduit_ref );
+    };
+
+    interface WithSignNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Encrypt::WithSignNegotiatedConduit conduit_ref );
+    };
+
+    interface ChannelManager {
+      CICM::Status negotiate_encrypt_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::Encrypt::Negotiator negotiator_ref );
+
+      CICM::Status negotiate_encrypt_with_mac_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::SymKey mac_key_ref,
+        in  CICM::AsymKey nego_key_ref,
+        in  CICM::SymMacAlgorithmId mac_algorithm,
+        out CICM::Encrypt::WithMACNegotiator negotiator_ref );
+
+      CICM::Status negotiate_encrypt_with_sign_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey sign_key_ref,
+        in  CICM::AsymKey nego_key_ref,
+        in  CICM::AsymSigAlgorithmId sign_algorithm,
+        out CICM::Encrypt::WithSignNegotiator negotiator_ref );
+
+      CICM::Status negotiate_encrypt_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::Encrypt::ControllerNegotiator negotiator_ref );
+
+      CICM::Status create_encrypt_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Encrypt::Conduit conduit_ref );
+
+      CICM::Status create_encrypt_with_mac_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey mac_key_ref,
+        in  CICM::SymKey encrypt_key_ref,
+        in  CICM::SymMacAlgorithmId mac_algorithm,
+        in  CICM::SymEncrAlgorithmId encr_algorithm,
+        out CICM::Encrypt::WithMACConduit conduit_ref );
+
+      CICM::Status create_encrypt_with_sign_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::AsymKey sign_key_ref,
+        in  CICM::SymKey encrypt_key_ref,
+        in  CICM::AsymSigAlgorithmId sign_algorithm,
+        in  CICM::SymEncrAlgorithmId encr_algorithm,
+        out CICM::Encrypt::WithSignConduit conduit_ref );
+      CICM::Status create_key_wrap_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey kek_ref,
+        in  CICM::KeyWrapAlgorithmId algorithm,
+        out CICM::Encrypt::KeyWrapConduit conduit_ref );
+
+      CICM::Status create_encrypt_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Encrypt::Controller controller_ref );
+
+      CICM::Status get_encrypt_stream(
+        in  CICM::LocalPort local_port,
+        out CICM::Encrypt::Stream stream_ref );
+    };
+  };
+
+  module Decrypt {
+    interface Stream : CICM::ReadStream {
+      CICM::Status decrypt(
+        out CICM::Buffer buffer );
+
+      CICM::Status decrypt_non_blocking(
+        out CICM::Buffer buffer,
+        in  CICM::TransId transaction_id );
+
+      CICM::Status decrypt_poll(
+        in  CICM::TransId transaction_id,
+        out CICM::ReadStream::ReadStatus status );
+    };
+
+    interface KeyUnwrapStream : CICM::Stream {
+      CICM::Status unwrap_sym_key(
+        out CICM::SymKey key_ref );
+
+      CICM::Status unwrap_asym_key(
+        out CICM::AsymKey key_ref );
+    };
+
+    interface Controller :
+      CICM::MultiDomainController,
+      CICM::SymKeyController,
+      CICM::SetVectorController,
+      CICM::ResyncController {};
+
+    interface NegotiatedController :
+      CICM::NegotiatedController,
+      CICM::SetVectorController,
+      CICM::ResyncController {};
+
+    interface Conduit :
+      CICM::Conduit,
+      CICM::Decrypt::Controller,
+      CICM::Decrypt::Stream {};
+
+    interface NegotiatedConduit :
+      CICM::Conduit,
+      CICM::Decrypt::NegotiatedController,
+      CICM::Decrypt::Stream {};
+
+    interface WithMACConduit :
+      CICM::AbstractMACVerifyConduit,
+      CICM::Decrypt::Conduit {};
+
+    interface WithMACNegotiatedConduit :
+      CICM::AbstractMACVerifyConduit,
+      CICM::Decrypt::NegotiatedConduit {};
+
+    interface WithVerifyConduit :
+      CICM::AbstractSigVerifyConduit,
+      CICM::Decrypt::Conduit {};
+
+    interface WithVerifyNegotiatedConduit :
+      CICM::AbstractSigVerifyConduit,
+      CICM::Decrypt::NegotiatedConduit {};
+
+    interface KeyUnwrapConduit :
+      CICM::Decrypt::Controller,
+      CICM::Decrypt::KeyUnwrapStream {};
+
+    interface Negotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Decrypt::NegotiatedConduit conduit_ref );
+    };
+
+    interface ControllerNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Decrypt::NegotiatedController controller_ref );
+    };
+
+    interface WithMACNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Decrypt::WithMACNegotiatedConduit conduit_ref );
+    };
+
+    interface WithVerifyNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Decrypt::WithVerifyNegotiatedConduit conduit_ref );
+    };
+
+    interface ChannelManager {
+      CICM::Status negotiate_decrypt_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::Decrypt::Negotiator negotiator_ref );
+
+      CICM::Status negotiate_decrypt_with_mac_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::SymKey verify_key_ref,
+        in  CICM::AsymKey nego_key_ref,
+        in  CICM::SymMacAlgorithmId verify_algorithm,
+        out CICM::Decrypt::WithMACNegotiator negotiator_ref );
+
+      CICM::Status negotiate_decrypt_with_verify_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey verify_key_ref,
+        in  CICM::AsymKey nego_key_ref,
+        in  CICM::AsymSigAlgorithmId verify_algorithm,
+        out CICM::Decrypt::WithVerifyNegotiator negotiator_ref );
+
+      CICM::Status negotiate_decrypt_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::Decrypt::ControllerNegotiator negotiator_ref );
+
+      CICM::Status create_decrypt_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Decrypt::Conduit conduit_ref );
+
+      CICM::Status create_decrypt_with_mac_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey verify_key_ref,
+        in  CICM::SymKey decrypt_key_ref,
+        in  CICM::SymMacAlgorithmId verify_algorithm,
+        in  CICM::SymEncrAlgorithmId decrypt_algorithm,
+        out CICM::Decrypt::WithMACConduit conduit_ref );
+
+      CICM::Status create_decrypt_with_verify_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::AsymKey verify_key_ref,
+        in  CICM::SymKey decrypt_key_ref,
+        in  CICM::AsymSigAlgorithmId verify_algorithm,
+        in  CICM::SymEncrAlgorithmId decrypt_algorithm,
+        out CICM::Decrypt::WithVerifyConduit conduit_ref );
+
+      CICM::Status create_key_unwrap_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey kek_ref,
+        in  CICM::KeyWrapAlgorithmId algorithm,
+        out CICM::Decrypt::KeyUnwrapConduit conduit_ref );
+
+      CICM::Status create_decrypt_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Decrypt::Controller controller_ref );
+
+      CICM::Status get_decrypt_stream(
+        in  CICM::LocalPort local_port,
+        out CICM::Decrypt::Stream stream_ref );
+    };
+  };
+
+  module Duplex {
+    interface Stream :
+      CICM::Encrypt::Stream,
+      CICM::Decrypt::Stream {};
+
+    interface Controller :
+      CICM::Encrypt::Controller,
+      CICM::Decrypt::Controller {};
+
+    interface NegotiatedController :
+      CICM::Encrypt::NegotiatedController,
+      CICM::Decrypt::NegotiatedController {};
+
+    interface Conduit :
+      CICM::Conduit,
+      CICM::Duplex::Controller,
+      CICM::Duplex::Stream {};
+
+    interface NegotiatedConduit :
+      CICM::Duplex::NegotiatedController,
+      CICM::Duplex::Stream {};
+
+    interface ControllerNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::Duplex::NegotiatedController controller_ref );
+    };
+
+    interface Negotiator : CICM::Negotiator {
+       CICM::Status complete(
+        out CICM::Duplex::NegotiatedConduit conduit_ref );
+    };
+
+    interface ChannelManager {
+      CICM::Status negotiate_duplex_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::Duplex::Negotiator negotiator_ref );
+
+      CICM::Status negotiate_duplex_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::Duplex::ControllerNegotiator negotiator_ref );
+
+      CICM::Status create_duplex_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Duplex::Conduit conduit_ref );
+
+      CICM::Status create_duplex_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Duplex::Controller controller_ref );
+
+      CICM::Status get_duplex_stream(
+        in  CICM::LocalPort local_port,
+        out CICM::Duplex::Stream stream_ref );
+    };
+  };
+
+  module BypassWrite {
+    interface Stream : CICM::WriteStream {
+      CICM::Status write_bypass(
+        in  CICM::Buffer buffer );
+
+      CICM::Status write_bypass_non_blocking(
+        in  CICM::Buffer buffer,
+        in  CICM::TransId transaction_id );
+
+      CICM::Status write_bypass_poll(
+        in  CICM::TransId transaction_id,
+        out CICM::WriteStream::WriteStatus status );
+    };
+
+    interface Controller : CICM::MultiDomainController {};
+
+    interface Conduit :
+      CICM::Conduit,
+      CICM::BypassWrite::Controller,
+      CICM::BypassWrite::Stream {};
+
+    interface ChannelManager {
+      CICM::Status create_bypass_write_conduit(
+        in  CICM::RemotePort remote_port,
+        out CICM::BypassWrite::Conduit conduit_ref );
+
+      CICM::Status create_bypass_write_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        out CICM::BypassWrite::Controller controller_ref );
+
+      CICM::Status get_bypass_write_stream(
+        in  CICM::LocalPort local_port,
+        out CICM::BypassWrite::Stream stream_ref );
+    };
+  };
+
+  module BypassRead {
+    interface Stream : CICM::ReadStream {
+      CICM::Status read_bypass(
+        out CICM::Buffer buffer );
+
+      CICM::Status read_bypass_non_blocking(
+        out CICM::Buffer buffer,
+        in   CICM::TransId transaction_id );
+
+      CICM::Status read_bypass_poll(
+        in  CICM::TransId transaction_id,
+        out CICM::ReadStream::ReadStatus status );
+    };
+
+    interface Controller : CICM::MultiDomainController {};
+
+    interface Conduit :
+      CICM::Conduit,
+      CICM::BypassRead::Controller,
+      CICM::BypassRead::Stream {};
+
+    interface ChannelManager {
+      CICM::Status create_bypass_read_conduit(
+        in  CICM::RemotePort remote_port,
+        out CICM::BypassRead::Conduit conduit_ref );
+
+      CICM::Status create_bypass_read_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        out CICM::BypassRead::Controller controller_ref );
+
+      CICM::Status get_bypass_read_stream(
+        in  CICM::LocalPort local_port,
+        out CICM::BypassRead::Stream stream_ref );
+    };
+  };
+
+  module EncryptBypass {
+    interface Stream :
+      CICM::Encrypt::Stream,
+      CICM::BypassWrite::Stream {
+    };
+
+    interface NegotiatedController :
+      CICM::Encrypt::NegotiatedController {};
+
+    interface Controller : CICM::Encrypt::Controller {};
+
+    interface Conduit :
+      CICM::Encrypt::Conduit,
+      CICM::EncryptBypass::Stream {};
+
+    interface NegotiatedConduit :
+      CICM::Encrypt::NegotiatedController,
+      CICM::EncryptBypass::Stream {};
+
+    interface ControllerNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::EncryptBypass::NegotiatedController controller_ref );
+    };
+
+    interface Negotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::EncryptBypass::NegotiatedConduit conduit_ref );
+    };
+
+    interface ChannelManager {
+      CICM::Status negotiate_encrypt_bypass_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::EncryptBypass::Negotiator negotiator_ref );
+
+      CICM::Status negotiate_encrypt_bypass_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::EncryptBypass::ControllerNegotiator negotiator_ref );
+
+      CICM::Status create_encrypt_bypass_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::EncryptBypass::Conduit conduit_ref );
+
+      CICM::Status create_encrypt_bypass_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::EncryptBypass::Controller controller_ref );
+
+      CICM::Status get_encrypt_bypass_stream(
+        in  CICM::LocalPort local_port,
+        out CICM::EncryptBypass::Stream stream_ref );
+    };
+  };
+
+  module DecryptBypass {
+    interface Stream : CICM::Decrypt::Stream {};
+
+    interface NegotiatedController :
+      CICM::Decrypt::NegotiatedController {};
+
+    interface Controller : CICM::Encrypt::Controller {};
+
+    interface Conduit :
+      CICM::Decrypt::Conduit,
+      CICM::DecryptBypass::Controller,
+      CICM::DecryptBypass::Stream {};
+
+    interface NegotiatedConduit :
+      CICM::Decrypt::NegotiatedConduit,
+      CICM::DecryptBypass::NegotiatedController,
+      CICM::DecryptBypass::Stream {};
+
+    interface ControllerNegotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::DecryptBypass::NegotiatedController controller_ref );
+    };
+
+    interface Negotiator : CICM::Negotiator {
+      CICM::Status complete(
+        out CICM::DecryptBypass::NegotiatedConduit conduit_ref );
+    };
+
+    interface ChannelManager {
+      CICM::Status negotiate_decrypt_bypass_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::DecryptBypass::Negotiator negotiator_ref );
+
+      CICM::Status negotiate_decrypt_bypass_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::ProtocolId protocol,
+        in  CICM::AsymKey key_ref,
+        out CICM::DecryptBypass::ControllerNegotiator negotiator_ref );
+
+      CICM::Status create_decrypt_bypass_conduit(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::DecryptBypass::Conduit conduit_ref );
+
+      CICM::Status create_decrypt_bypass_controller(
+        in  CICM::LocalPort local_port,
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::DecryptBypass::Controller controller_ref );
+
+      CICM::Status get_decrypt_bypass_stream(
+        in  CICM::LocalPort local_port,
+        out CICM::DecryptBypass::Stream stream_ref );
+    };
+  };
+
+  module Emit {
+    interface GetStream : CICM::ReadStream {
+      CICM::Status get(
+        in  CICM::UInt32 length,
+        out CICM::Buffer buffer );
+
+      CICM::Status get_non_blocking(
+        in  CICM::UInt32 length,
+        out CICM::Buffer buffer,
+        in  CICM::TransId transaction_id );
+
+      CICM::Status get_poll(
+        in  CICM::TransId transaction_id,
+        out CICM::ReadStream::ReadStatus status );
+    };
+
+    interface Controller : CICM::Controller {
+      readonly attribute CICM::RemotePort remote_port;
+    };
+
+    interface KeyStreamGenController :
+      CICM::SymKeyController,
+      CICM::GenVectorController,
+      CICM::Emit::Controller {};
+
+    interface PseudoRandomController :
+      CICM::SymKeyController,
+      CICM::Emit::Controller {};
+
+    interface RandomController : CICM::Emit::Controller {};
+
+    interface KeyStreamGenConduit :
+      CICM::Conduit,
+      CICM::SymKeyController,
+      CICM::GenVectorController,
+      CICM::Emit::GetStream {};
+
+    interface PseudoRandomConduit :
+      CICM::Conduit,
+      CICM::SymKeyController,
+      CICM::Emit::GetStream {};
+
+    interface RandomConduit :
+      CICM::Conduit,
+      CICM::Emit::GetStream {};
+
+    interface ChannelManager {
+      CICM::Status create_key_stream_gen_controller(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Emit::KeyStreamGenController controller_ref );
+
+      CICM::Status create_pseudorandom_controller(
+        in  CICM::RemotePort remote_port,
+        in  CICM::SymKey seed,
+        out CICM::Emit::PseudoRandomController controller_ref );
+
+      CICM::Status create_random_controller(
+        in  CICM::RemotePort remote_port,
+        out CICM::Emit::RandomController controller_ref );
+
+      CICM::Status create_key_stream_gen_conduit(
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Emit::KeyStreamGenConduit conduit_ref );
+
+      CICM::Status create_pseudorandom_conduit(
+        in  CICM::SymKey seed,
+        out CICM::Emit::PseudoRandomConduit conduit_ref );
+
+      CICM::Status create_random_conduit(
+        out CICM::Emit::RandomConduit conduit_ref );
+    };
+  };
+
+  module Answer {
+    interface PutStream : CICM::Stream {
+      CICM::Status put(
+        in  CICM::Buffer buffer );
+    };
+
+    interface HashConduit :
+      CICM::Conduit,
+      CICM::Answer::PutStream {
+
+      readonly attribute CICM::HashAlgorithmId algorithm;
+
+      CICM::Status end_get_hash(
+        out HashBuffer hash );
+    };
+
+    interface MACConduit :
+      CICM::AbstractMACConduit,
+      CICM::Answer::PutStream {};
+
+    interface MACVerifyConduit :
+      CICM::AbstractMACVerifyConduit,
+      CICM::Answer::PutStream {};
+
+    interface SignConduit :
+      CICM::AbstractSignConduit,
+      CICM::Answer::PutStream {};
+
+    interface SignHashConduit : CICM::Answer::SignConduit {};
+
+    interface VerifyConduit :
+      CICM::AbstractSigVerifyConduit,
+      CICM::Answer::PutStream {};
+
+    interface VerifyHashConduit : CICM::Answer::VerifyConduit {};
+
+    interface ChannelManager {
+      CICM::Status create_hash_conduit(
+        in  CICM::HashAlgorithmId algorithm,
+        out CICM::Answer::HashConduit conduit_ref );
+
+      CICM::Status create_mac_conduit(
+        in  CICM::SymKey key_ref,
+        in  CICM::SymMacAlgorithmId algorithm,
+        out CICM::Answer::MACConduit conduit_ref );
+
+      CICM::Status create_mac_verify_conduit(
+        in  CICM::SymKey key_ref,
+        in  CICM::SymMacAlgorithmId algorithm,
+        out CICM::Answer::MACVerifyConduit conduit_ref );
+
+      CICM::Status create_sign_conduit(
+        in  CICM::AsymKey key_ref,
+        in  CICM::AsymSigAlgorithmId algorithm,
+        out CICM::Answer::SignConduit conduit_ref );
+
+      CICM::Status create_sign_hash_conduit(
+        in  CICM::AsymKey key_ref,
+        in  CICM::AsymSigAlgorithmId algorithm,
+        out CICM::Answer::SignHashConduit conduit_ref );
+
+      CICM::Status create_verify_conduit(
+        in  CICM::AsymKey key_ref,
+        in  CICM::AsymSigAlgorithmId algorithm,
+        out CICM::Answer::VerifyConduit conduit_ref );
+
+      CICM::Status create_verify_hash_conduit(
+        in  CICM::AsymKey key_ref,
+        in  CICM::AsymSigAlgorithmId algorithm,
+        out CICM::Answer::VerifyHashConduit conduit_ref );
+    };
+  };
+
+  module Coprocessor {
+    interface Stream : CICM::Stream {
+      CICM::Status get_final_buffer(
+        out CICM::Buffer buffer );
+    };
+
+    interface EncryptConduit :
+      CICM::Conduit,
+      CICM::SymKeyController,
+      CICM::GenVectorController,
+      CICM::ResyncController,
+      CICM::Coprocessor::Stream {
+
+      CICM::Status encrypt(
+        in  CICM::Buffer plaintext,
+        out CICM::Buffer ciphertext );
+    };
+
+    interface EncryptWithMACConduit :
+      CICM::AbstractMACConduit,
+      CICM::Coprocessor::EncryptConduit {};
+
+    interface EncryptWithSignConduit :
+      CICM::AbstractSignConduit,
+      CICM::Coprocessor::EncryptConduit {};
+
+    interface DecryptConduit :
+      CICM::Conduit,
+      CICM::SymKeyController,
+      CICM::SetVectorController,
+      CICM::ResyncController,
+      CICM::Coprocessor::Stream {
+
+      CICM::Status decrypt(
+        in  CICM::Buffer ciphertext,
+        out CICM::Buffer plaintext );
+    };
+
+    interface DecryptWithMACConduit :
+      CICM::AbstractMACVerifyConduit,
+      CICM::Coprocessor::DecryptConduit {};
+
+    interface DecryptWithVerifyConduit :
+      CICM::AbstractSigVerifyConduit,
+      CICM::Coprocessor::DecryptConduit {};
+
+    interface ChannelManager {
+      CICM::Status create_coprocessor_encrypt_conduit(
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Coprocessor::EncryptConduit conduit_ref );
+
+      CICM::Status create_coprocessor_encrypt_with_mac_conduit(
+        in  CICM::SymKey mac_key_ref,
+        in  CICM::SymKey encrypt_key_ref,
+        in  CICM::SymMacAlgorithmId mac_algorithm,
+        in  CICM::SymEncrAlgorithmId encrypt_algorithm,
+        out CICM::Coprocessor::EncryptWithMACConduit conduit_ref );
+
+      CICM::Status create_coprocessor_encrypt_with_sign_conduit(
+        in  CICM::AsymKey sign_key_ref,
+        in  CICM::SymKey encrypt_key_ref,
+        in  CICM::AsymSigAlgorithmId sign_algorithm,
+        in  CICM::SymEncrAlgorithmId encrypt_algorithm,
+        out CICM::Coprocessor::EncryptWithSignConduit conduit_ref );
+
+      CICM::Status create_coprocessor_decrypt_conduit(
+        in  CICM::SymKey key_ref,
+        in  CICM::SymEncrAlgorithmId algorithm,
+        out CICM::Coprocessor::DecryptConduit conduit_ref );
+
+      CICM::Status create_coprocessor_decrypt_with_mac_conduit(
+        in  CICM::SymKey mac_key_ref,
+        in  CICM::SymKey decrypt_key_ref,
+        in  CICM::SymMacAlgorithmId mac_algorithm,
+        in  CICM::SymEncrAlgorithmId encrypt_algorithm,
+        out CICM::Coprocessor::DecryptWithMACConduit conduit_ref );
+
+      CICM::Status create_coprocessor_decrypt_with_verify_conduit(
+        in  CICM::AsymKey verify_key_ref,
+        in  CICM::SymKey decrypt_key_ref,
+        in  CICM::AsymSigAlgorithmId verify_algorithm,
+        in  CICM::SymEncrAlgorithmId decrypt_algorithm,
+        out CICM::Coprocessor::DecryptWithVerifyConduit conduit_ref );
+    };
+  };
+
+  interface ChannelManager :
+    CICM::Answer::ChannelManager,
+    CICM::BypassRead::ChannelManager,
+    CICM::BypassWrite::ChannelManager,
+    CICM::Coprocessor::ChannelManager,
+    CICM::Decrypt::ChannelManager,
+    CICM::DecryptBypass::ChannelManager,
+    CICM::Duplex::ChannelManager,
+    CICM::Emit::ChannelManager,
+    CICM::Encrypt::ChannelManager,
+    CICM::EncryptBypass::ChannelManager {
+
+    CICM::Status create_controller_group(
+      out CICM::ControllerGroup controller_group_ref );
+  };
+
+
+  typedef CICM::CharString TokenRecord;
+  typedef CICM::CharString ModuleRecord;
+
+  interface TokenAssnIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::TokenRecord token_rec_ref );
+  };
+
+  interface ModuleAssnIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::ModuleRecord module_rec_ref );
+  };
+
+  interface TokenManager {
+    readonly attribute CICM::ModuleAssnIterator
+      module_association_iterator;
+
+    readonly attribute CICM::TokenAssnIterator
+      token_association_iterator;
+
+    CICM::Status associate(
+      out CICM::ModuleRecord module_rec,
+      out CICM::TokenRecord token_rec );
+
+    CICM::Status disassociate();
+
+    CICM::Status disassociate_missing_module(
+      in  CICM::ModuleRecord module_rec );
+
+    CICM::Status disassociate_missing_token(
+      in  CICM::TokenRecord token_rec );
+  };
+
+  typedef CICM::CharString UserId;
+  typedef CICM::CharString RoleId;
+
+  interface UserIdIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::UserId user_id );
+  };
+
+  interface RoleIdIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::RoleId role_id );
+  };
+
+  interface UserManager {
+    readonly attribute CICM::UserIdIterator user_iterator;
+    readonly attribute CICM::RoleIdIterator role_iterator;
+
+    CICM::Status add(
+      in  CICM::UserId user,
+      in  CICM::CharString password );
+
+    CICM::Status modify(
+      in  CICM::UserId user,
+      in  CICM::CharString password );
+
+    CICM::Status remove(
+      in  CICM::UserId user );
+
+    CICM::Status associate(
+      in  CICM::UserId user,
+      in  CICM::RoleId role );
+
+    CICM::Status disassociate(
+      in  CICM::UserId user,
+      in  CICM::RoleId role );
+  };
+
+  interface Login {
+    CICM::Status logout();
+  };
+
+  interface LoginManager {
+     CICM::Status login(
+      in  CICM::UserId user,
+      in  CICM::CharString password,
+      out CICM::Login login_ref );
+
+    CICM::Status login_auth_data(
+      in  CICM::UserId user,
+      in  CICM::CharString password,
+      in  CICM::Buffer auth_data,
+      out CICM::Login login_ref );
+  };
+
+  typedef CICM::CharString PackageId;
+
+  interface Package {
+    typedef CICM::UInt32 PackageType;
+    const CICM::Package::PackageType
+      C_PACKAGE_ALGORITHM = 0x00006054;
+
+    const CICM::Package::PackageType
+      C_PACKAGE_CONFIG_PARAMS = 0x00006057;
+
+    const CICM::Package::PackageType
+      C_PACKAGE_FPGA_IMAGE = 0x00006058;
+
+    const CICM::Package::PackageType
+      C_PACKAGE_POLICY_DB = 0x0000605B;
+
+    const CICM::Package::PackageType
+      C_PACKAGE_SOFTWARE = 0x0000605D;
+
+    readonly attribute CICM::PackageId id;
+
+    CICM::Status activate();
+    CICM::Status deactivate();
+    CICM::Status delete();
+  };
+
+  interface PackageIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::Package package_ref );
+  };
+
+  interface PackageImporter {
+    CICM::Status import_segment(
+      in  CICM::Buffer package_data );
+
+    CICM::Status complete(
+      out CICM::Package package_ref );
+
+    CICM::Status abort();
+  };
+
+  interface PackageManager {
+    readonly attribute CICM::PackageIterator package_iterator;
+
+    CICM::Status import_package(
+      in  CICM::Package::PackageType package_type,
+      out CICM::PackageImporter importer_ref );
+
+    CICM::Status import_package_with_key(
+      in  CICM::Package::PackageType package_type,
+      in  CICM::SymKey key_ref,
+      out CICM::PackageImporter importer_ref );
+
+    CICM::Status get_package_by_id(
+      in  CICM::PackageId package_id,
+      out CICM::Package package_ref );
+
+    CICM::Status reencrypt_software();
+  };
+
+  interface LogEntry {
+    readonly attribute CICM::UserId user_id;
+    readonly attribute CICM::RoleId role_id;
+    readonly attribute CICM::CharString message;
+    readonly attribute CICM::CharString date_time;
+
+    CICM::Status delete();
+  };
+
+  interface LogEntryIterator : CICM::Iterator {
+    CICM::Status get_next(
+      out CICM::LogEntry log_entry_ref );
+  };
+
+  interface LogManager {
+    readonly attribute CICM::LogEntryIterator log_entry_iterator;
+
+    CICM::Status retrieve(
+      out CICM::Buffer log_ref );
+
+    CICM::Status destroy();
+  };
+
+  interface TestManager {
+    typedef CICM::UInt32 Status;
+    const CICM::TestManager::Status C_TEST_SUCCESS = 0x00006062;
+    const CICM::TestManager::Status C_TEST_FAILURE = 0x00006064;
+
+    CICM::Status run_test(
+      in  CICM::Buffer test_parameters,
+      out CICM::TestManager::Status status );
+
+    CICM::Status run_test_get_results(
+      in  CICM::Buffer test_parameters,
+      out CICM::Buffer test_results );
+  };
+
+  interface ModuleEventListener {
+    typedef CICM::UInt32 ModuleEvent;
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_ACCESS_TOKEN_INSERTED = 0x00002001;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_ACCESS_TOKEN_REMOVED = 0x00002002;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_ALARM = 0x00002004;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_FAILURE = 0x00002007;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_INSUFFICIENT_ENTROPY = 0x00002008;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_EXPIRED_HARD = 0x0000200B;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_EXPIRED_SOFT = 0x0000200D;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_FILL_COMPLETE = 0x0000200E;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_FILL_CONNECTED = 0x00002010;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_FILL_INITIATED = 0x00002013;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_MEMORY = 0x00002015;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_KEY_PROTO_MESSAGE = 0x00002016;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_LOG_FULL = 0x00002019;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_LOG_NEAR_FULL = 0x0000201A;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_LOGIN_FAILURE = 0x0000201C;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_NOT_READY_FOR_TRAFFIC = 0x0000201F;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_MGMT_ENTER = 0x00002020;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_MGMT_EXIT = 0x00002023;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_OFF = 0x00002025;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_OFF_FAILURE = 0x00002026;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_POWER_ON = 0x00002029;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_READY_FOR_TRAFFIC = 0x0000202A;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_REKEY_REQUEST = 0x0000202C;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_TEST_FAILURE = 0x0000202F;
+
+    const CICM::ModuleEventListener::ModuleEvent
+      C_MODULE_ZEROIZED = 0x00002031;
+
+    void event_occurred(
+      in  CICM::ModuleEventListener::ModuleEvent event,
+      in  CICM::Buffer event_data );
+  };
+
+  interface ModuleEventManager {
+    CICM::Status register(
+      in  CICM::ModuleEventListener::ModuleEvent event,
+      in  CICM::ModuleEventListener listener );
+
+    CICM::Status unregister(
+      in  CICM::ModuleEventListener::ModuleEvent event );
+  };
+    
+
+  interface CryptoModule {
+    readonly attribute CICM::ModuleId module_id;
+    readonly attribute CICM::CharString manufacturer;
+    readonly attribute CICM::CharString model;
+    readonly attribute CICM::CharString serial_number;
+    readonly attribute CICM::CharString module_version;
+    readonly attribute CICM::CharString software_version;
+    readonly attribute CICM::CharString driver_version;
+    readonly attribute CICM::CharString library_version;
+    readonly attribute CICM::RoleId role;
+    attribute CICM::CharString date_time;
+    readonly attribute CICM::SymKeyManager sym_key_manager;
+    readonly attribute CICM::AsymKeyManager asym_key_manager;
+    readonly attribute CICM::KeyDatabase key_database;
+    readonly attribute CICM::ChannelManager channel_manager;
+    readonly attribute CICM::ModuleEventManager event_manager;
+    readonly attribute CICM::PackageManager package_manager;
+    readonly attribute CICM::TokenManager token_manager;
+    readonly attribute CICM::UserManager user_manager;
+    readonly attribute CICM::LoginManager login_manager;
+    readonly attribute CICM::TestManager test_manager;
+    readonly attribute CICM::LogManager log_manager;
+
+    CICM::Status configure_fill_interface(
+      in  CICM::Buffer interface_parameters,
+      in  CICM::LocalPort fill_port );
+
+    CICM::Status reset();
+  };
+
+  interface CICMRoot {
+    CICM::Status get_module_by_id(
+      in  CICM::ModuleId id,
+      out CICM::CryptoModule crypto_module_ref );
+  };
+};
+	
