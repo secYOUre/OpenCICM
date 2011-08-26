@@ -1,0 +1,39 @@
+
+OpenCICM: Open Common Interface to Cryptographic Modules
+========================================================
+
+
+CICM -- pronounced Kick-Em -- is a programming interface to standardize
+the way software programs manage and use high assurance crypto modules.
+
+Written in Erlang, OpenCICM is aimed at supporting with running code
+the CICM undergoing standardization activities by the IETF.
+
+
+
+Specification Documents
+-----------------------
+
+- CICM <http://tools.ietf.org/html/draft-lanz-cicm>
+- Logical Model <http://tools.ietf.org/html/draft-lanz-cicm-lm>
+- Module Management <http://tools.ietf.org/html/draft-lanz-cicm-mm>
+- Key Management <http://tools.ietf.org/html/draft-lanz-cicm-km>
+- Channel Management <http://tools.ietf.org/html/draft-lanz-cicm-cm>
+
+
+
+OpenCICM Author and Copyright notice
+------------------------------------
+
+Copyright (c) 2011 - Alfonso De Gregorio <adg@crypto.lo.gy>, secYOUre by
+SecurityPillar Ltd.
+
+
+For more
+--------
+
+Working Group Charter:
+<http://code.google.com/p/ietf-cicm/wiki/WGCharter>
+
+For updates and technical discussions about CICM, join the CICM 
+mailing list at: <https://www.ietf.org/mailman/listinfo/cicm>
