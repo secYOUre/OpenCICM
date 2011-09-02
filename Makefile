@@ -1,13 +1,17 @@
-all:
-	(cd specs/idl;$(MAKE))
-	(cd src;$(MAKE))
+REBAR =$(shell which rebar || echo ./rebar)
+ERL  ?= erl
+APP  := ocicm
+.PHONY: deps
+
+all: deps
+	@$(REBAR) compile
+	@$(REBAR) compile
+
+deps:
+	@$(REBAR) get-deps
 
 clean:
-	(cd src;$(MAKE) clean)
-	(cd tests;$(MAKE) clean)
+	@$(REBAR) clean
 
-test: all
-	(cd tests;$(MAKE) test)
-
-clean_logs:
-	(cd tests;$(MAKE) clean_logs)
+distclean:
+	@$(REBAR) delete-deps

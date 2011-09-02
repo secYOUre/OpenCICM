@@ -1,0 +1,20 @@
+{application, ocicm,
+ [
+  {description, "OpenCICM"},
+  {vsn, "0.0.0"},
+  {id, "ocicm"},
+  {modules, [
+%%             'IDLEx_Hello',
+%%             'IDLEx_Hello_impl',
+             ocicm_app,
+             ocicm_sup,
+             oe_ocicm
+            ]},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { ocicm_app, []}},
+  {env, []}
+ ]}.

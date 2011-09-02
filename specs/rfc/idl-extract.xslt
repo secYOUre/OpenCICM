@@ -46,9 +46,7 @@
                 xmlns:x="http://purl.org/net/xml2rfc/ext"
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
 
-                exclude-result-prefixes="date ed exslt msxsl myns rdf saxon saxo
-n-old x xhtml"
-                >
+                exclude-result-prefixes="date ed exslt msxsl myns rdf saxon saxon-old x xhtml" >
 
 <xsl:output method="text" encoding="iso-8859-1" omit-xml-declaration="yes" mime-type="text/plain" indent="no"/>
 
