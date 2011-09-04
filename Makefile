@@ -5,7 +5,6 @@ APP  := ocicm
 
 all: deps
 	@$(REBAR) compile
-	@$(REBAR) compile
 
 deps:
 	@$(REBAR) get-deps
